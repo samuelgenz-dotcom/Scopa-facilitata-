@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conta Carte Scopa</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f4f4;
+    text-align:center;
+    margin:20px;
+}
+
+h1{
+    color:#2c3e50;
+}
+
+.contatori{
+    margin:20px;
+    font-size:20px;
+    font-weight:bold;
+}
+
+#mazzo{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(100px,1fr));
+    gap:10px;
+    max-width:1000px;
+    margin:auto;
+}
+
+.carta{
+    background:white;
+    border:2px solid #333;
+    border-radius:10px;
+    padding:15px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.carta:hover{
+    transform:scale(1.05);
+}
+
+.uscita{
+    background:#27ae60;
+    color:white;
+}
+
+button{
+    margin-top:20px;
+    padding:12px 25px;
+    font-size:18px;
+    cursor:pointer;
+    border:none;
+    border-radius:8px;
+    background:#3498db;
+    color:white;
+}
+</style>
+</head>
+<body>
+
+<h1>🃏 Conta Carte Scopa</h1>
+
+<div class="contatori">
+Carte uscite: <span id="uscite">0</span> |
+Carte rimanenti: <span id="rimaste">40</span>
+</div>
+
+<div id="mazzo"></div>
+
+<button onclick="resetPartita()">Nuova Partita</button>
+
+<script>
+const semi = ["Bastoni","Coppe","Denari","Spade"];
+const mazzo = document.getElementById("mazzo");
+
+let uscite = 0;
+
+semi.forEach(seme => {
+    for(let numero=1; numero<=10; numero++){
+
+        const carta = document.createElement("div");
+
+        carta.classList.add("carta");
+
+        carta.textContent = numero + " di " + seme;
+
+        carta.addEventListener("click", () => {
+
+            if(carta.classList.contains("uscita")){
+                carta.classList.remove("uscita");
+                uscite--;
+            }else{
+                carta.classList.add("uscita");
+                uscite++;
+            }
+
+            aggiornaContatori();
+        });
+
+        mazzo.appendChild(carta);
+    }
+});
+
+function aggiornaContatori(){
+    document.getElementById("uscite").textContent = uscite;
+    document.getElementById("rimaste").textContent = 40 - uscite;
+}
+
+function resetPartita(){
+
+    document.querySelectorAll(".carta").forEach(carta=>{
+        carta.classList.remove("uscita");
+    });
+
+    uscite = 0;
+    aggiornaContatori();
+}
+</script>
+
+</body>
+</html>
