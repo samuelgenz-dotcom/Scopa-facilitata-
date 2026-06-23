@@ -12,68 +12,69 @@ let showOnlyRemaining = false;
 const container = document.getElementById("cardsContainer");
 const historyList = document.getElementById("historyList");
 
+// -------------------
+// CREA MAZZO
+// -------------------
 function createDeck(){
 
     cards = [];
 
-    semi.forEach(seme=>{
-
-        for(let valore=1; valore<=10; valore++){
-
+    semi.forEach(s => {
+        for(let v=1; v<=10; v++){
             cards.push({
-                id:`${valore}-${seme.nome}`,
-                valore,
-                seme:seme.nome,
-                classe:seme.classe,
+                id:`${v}-${s.nome}`,
+                valore:v,
+                seme:s.nome,
+                classe:s.classe,
                 used:false
             });
-
         }
-
     });
-
 }
 
+// -------------------
+// RENDER CARDS
+// -------------------
 function renderCards(){
 
-    container.innerHTML="";
+    container.innerHTML = "";
 
-    cards.forEach(card=>{
+    cards.forEach(c => {
 
-        if(showOnlyRemaining && card.used) return;
+        if(showOnlyRemaining && c.used) return;
 
-        const div=document.createElement("div");
+        const div = document.createElement("div");
 
-        div.className=`card ${card.classe}`;
+        div.className = `card ${c.classe}`;
+        if(c.used) div.classList.add("used");
 
-        if(card.used) div.classList.add("used");
-
-        if(card.valore===7 && card.seme==="Denari")
+        if(c.valore===7 && c.seme==="Denari")
             div.classList.add("settebello");
 
-        div.innerHTML=`
-            <div class="value">${card.valore}</div>
-            <div class="suit">${card.seme}</div>
+        div.innerHTML = `
+            <div class="value">${c.valore}</div>
+            <div class="suit">${c.seme}</div>
         `;
 
-        div.onclick=()=>toggleCard(card.id);
+        div.onclick = () => toggleCard(c.id);
 
         container.appendChild(div);
-
     });
-
 }
 
+// -------------------
+// TOGGLE CARTA
+// -------------------
 function toggleCard(id){
 
-    const card = cards.find(c => c.id === id);
+    const c = cards.find(x => x.id === id);
 
-    card.used = !card.used;
+    c.used = !c.used;
 
-    if(card.used){
-        history.push(card.id);
+    if(c.used){
+        history.push(id);
     } else {
-        history = history.filter(h => h !== card.id);
+        history = history.filter(h => h !== id);
     }
 
     save();
@@ -82,31 +83,32 @@ function toggleCard(id){
     renderHistory();
 }
 
+// -------------------
+// CRONOLOGIA
+// -------------------
 function renderHistory(){
 
-    historyList.innerHTML="";
+    historyList.innerHTML = "";
 
-    history.forEach((item,index)=>{
+    history.forEach((h,i) => {
 
-        const li=document.createElement("li");
+        const li = document.createElement("li");
+        li.textContent = `${i+1}. ${h}`;
 
-        li.textContent=`${index+1}. ${item}`;
-
-        li.onclick=()=>undoSpecific(item);
+        li.onclick = () => undo(h);
 
         historyList.appendChild(li);
-
     });
-
 }
 
-function undoSpecific(id){
+// -------------------
+// UNDO
+// -------------------
+function undo(id){
 
-    const card = cards.find(c => c.id === id);
+    const c = cards.find(x => x.id === id);
 
-    if(card){
-        card.used = false;
-    }
+    if(c) c.used = false;
 
     history = history.filter(h => h !== id);
 
@@ -116,57 +118,95 @@ function undoSpecific(id){
     renderHistory();
 }
 
+// -------------------
+// STATISTICHE + AI
+// -------------------
 function updateStats(){
 
     const used = cards.filter(c => c.used);
-
     const rimaste = 40 - used.length;
 
-    const denariRimasti =
-    cards.filter(c => c.seme === "Denari" && !c.used).length;
+    const denari = cards.filter(c => c.seme==="Denari" && !c.used).length;
+    const sette = cards.filter(c => c.valore===7 && !c.used).length;
+    const assi = cards.filter(c => c.valore===1 && !c.used).length;
+    const figure = cards.filter(c => c.valore>=8 && !c.used).length;
 
-    const setteRimasti =
-    cards.filter(c => c.valore === 7 && !c.used).length;
+    const setteBello = cards.find(c => c.valore===7 && c.seme==="Denari");
 
-    const assiRimasti =
-    cards.filter(c => c.valore === 1 && !c.used).length;
-
-    const figureRimaste =
-    cards.filter(c => c.valore >= 8 && !c.used).length;
-
-    const setteBello =
-    cards.find(c => c.valore === 7 && c.seme === "Denari");
-
+    // UI base
     document.getElementById("uscite").textContent = used.length;
     document.getElementById("rimaste").textContent = rimaste;
 
-    document.getElementById("denari").textContent = denariRimasti;
-    document.getElementById("sette").textContent = setteRimasti;
-    document.getElementById("assi").textContent = assiRimasti;
-    document.getElementById("figure").textContent = figureRimaste;
+    document.getElementById("denari").textContent = denari;
+    document.getElementById("sette").textContent = sette;
+    document.getElementById("assi").textContent = assi;
+    document.getElementById("figure").textContent = figure;
 
     document.getElementById("settebello").textContent =
         setteBello && setteBello.used ? "🔴" : "🟢";
 
+    // -------------------
     // PROBABILITÀ
-
+    // -------------------
     document.getElementById("probDenari").textContent =
-    rimaste ? ((denariRimasti/rimaste)*100).toFixed(1)+"%" : "0%";
+        rimaste ? ((denari/rimaste)*100).toFixed(1)+"%" : "0%";
 
     document.getElementById("probSette").textContent =
-    rimaste ? ((setteRimasti/rimaste)*100).toFixed(1)+"%" : "0%";
+        rimaste ? ((sette/rimaste)*100).toFixed(1)+"%" : "0%";
 
     document.getElementById("probAsso").textContent =
-    rimaste ? ((assiRimasti/rimaste)*100).toFixed(1)+"%" : "0%";
+        rimaste ? ((assi/rimaste)*100).toFixed(1)+"%" : "0%";
 
     document.getElementById("probFigura").textContent =
-    rimaste ? ((figureRimaste/rimaste)*100).toFixed(1)+"%" : "0%";
+        rimaste ? ((figure/rimaste)*100).toFixed(1)+"%" : "0%";
 
     document.getElementById("probSettebello").textContent =
-    rimaste ? ((setteBello && !setteBello.used ? 1 : 0)/rimaste*100).toFixed(1)+"%" : "0%";
+        rimaste ? ((setteBello && !setteBello.used ? 1 : 0)/rimaste*100).toFixed(1)+"%" : "0%";
 
+    // -------------------
+    // 🧠 AI SCOPA PRO
+    // -------------------
+
+    const remaining = cards.filter(c => !c.used);
+
+    const strong = remaining.filter(c =>
+        c.valore===7 || c.valore===1 || c.seme==="Denari"
+    );
+
+    const ratio = strong.length / (remaining.length || 1);
+
+    let advantage = "🟢";
+    let enemy = "Bassa";
+    let ai7 = "-";
+
+    if(ratio > 0.45){
+        advantage = "🔴";
+        enemy = "Alta";
+    }
+    else if(ratio > 0.25){
+        advantage = "🟡";
+        enemy = "Media";
+    }
+    else{
+        advantage = "🟢";
+        enemy = "Bassa";
+    }
+
+    if(setteBello && !setteBello.used){
+        const p = Math.min(90, strong.length * 8);
+        ai7 = `Prob avversari 7 Bello: ${p.toFixed(0)}%`;
+    } else {
+        ai7 = "7 Bello già uscito";
+    }
+
+    document.getElementById("aiAdvantage").textContent = advantage;
+    document.getElementById("aiEnemyStrength").textContent = enemy;
+    document.getElementById("aiSevenBello").textContent = ai7;
 }
 
+// -------------------
+// SAVE / LOAD
+// -------------------
 function save(){
     localStorage.setItem("scopa_cards", JSON.stringify(cards));
     localStorage.setItem("scopa_history", JSON.stringify(history));
@@ -174,36 +214,36 @@ function save(){
 
 function load(){
 
-    const savedCards = JSON.parse(localStorage.getItem("scopa_cards"));
-    const savedHistory = JSON.parse(localStorage.getItem("scopa_history"));
+    const c = JSON.parse(localStorage.getItem("scopa_cards"));
+    const h = JSON.parse(localStorage.getItem("scopa_history"));
 
-    if(savedCards){
-        cards = savedCards;
-        history = savedHistory || [];
+    if(c){
+        cards = c;
+        history = h || [];
     } else {
         createDeck();
     }
 }
 
-document.getElementById("toggleView").onclick = ()=>{
-
+// -------------------
+// BOTTONI
+// -------------------
+document.getElementById("toggleView").onclick = () => {
     showOnlyRemaining = !showOnlyRemaining;
-
     document.getElementById("toggleView").textContent =
         showOnlyRemaining ? "👁 Mostra tutte" : "👁 Solo carte rimaste";
-
     renderCards();
 };
 
-document.getElementById("undoBtn").onclick = ()=>{
+document.getElementById("undoBtn").onclick = () => {
 
     const last = history.pop();
 
     if(!last) return;
 
-    const card = cards.find(c => c.id === last);
+    const c = cards.find(x => x.id === last);
 
-    if(card) card.used = false;
+    if(c) c.used = false;
 
     save();
     updateStats();
@@ -211,13 +251,12 @@ document.getElementById("undoBtn").onclick = ()=>{
     renderHistory();
 };
 
-document.getElementById("resetBtn").onclick = ()=>{
-
+document.getElementById("resetBtn").onclick = () => {
     localStorage.clear();
     location.reload();
-
 };
 
+// -------------------
 load();
 updateStats();
 renderCards();
