@@ -13,28 +13,40 @@
     <h1>🧠 AI Scopa PRO</h1>
 </header>
 
+<!-- SUGGERIMENTO AI -->
+<section class="ai-box">
+    <h2>🎯 Suggerimento AI</h2>
+    <div id="aiSuggestion" class="ai-suggestion neutral">Seleziona le tue carte in mano</div>
+</section>
+
+<!-- MANO GIOCATORE -->
+<section class="hand-section">
+    <h2>✋ La tua mano <span class="hand-hint">(clicca una carta per aggiungerla)</span></h2>
+    <div id="myHandCards" class="hand-cards"></div>
+</section>
+
 <section class="dashboard">
 
     <div class="stat"><span id="uscite">0</span><small>Uscite</small></div>
-    <div class="stat"><span id="rimaste">40</span><small>Rimaste</small></div>
+    <div class="stat"><span id="rimaste">40</span><small>Sconosciute</small></div>
 
-    <div class="stat"><span id="denari">10</span><small>Denari</small></div>
-    <div class="stat"><span id="sette">4</span><small>Sette</small></div>
-    <div class="stat"><span id="assi">4</span><small>Assi</small></div>
-    <div class="stat"><span id="figure">12</span><small>Figure</small></div>
+    <div class="stat prob"><span id="denari">10</span><small>Denari ignoti</small></div>
+    <div class="stat prob"><span id="sette">4</span><small>Sette ignoti</small></div>
+    <div class="stat prob"><span id="assi">4</span><small>Assi ignoti</small></div>
+    <div class="stat prob"><span id="figure">12</span><small>Figure ignote</small></div>
 
     <div class="stat"><span id="settebello">🟢</span><small>7 Bello</small></div>
 
-    <!-- PROBABILITÀ -->
-    <div class="stat"><span id="probDenari">0%</span><small>Prob Denari</small></div>
-    <div class="stat"><span id="probSette">0%</span><small>Prob Sette</small></div>
-    <div class="stat"><span id="probAsso">0%</span><small>Prob Asso</small></div>
-    <div class="stat"><span id="probFigura">0%</span><small>Prob Figure</small></div>
-    <div class="stat"><span id="probSettebello">0%</span><small>Prob 7 Bello</small></div>
+    <!-- PROBABILITÀ AVVERSARIO -->
+    <div class="stat warn"><span id="probDenari">0%</span><small>Avv. ha Denaro</small></div>
+    <div class="stat warn"><span id="probSette">0%</span><small>Avv. ha Sette</small></div>
+    <div class="stat warn"><span id="probAsso">0%</span><small>Avv. ha Asso</small></div>
+    <div class="stat warn"><span id="probFigura">0%</span><small>Avv. ha Figura</small></div>
+    <div class="stat warn"><span id="probSettebello">0%</span><small>Avv. ha 7 Bello</small></div>
 
     <!-- AI PRO -->
     <div class="stat"><span id="aiAdvantage">🟡</span><small>Vantaggio</small></div>
-    <div class="stat"><span id="aiEnemyStrength">-</span><small>Forza Avversari</small></div>
+    <div class="stat"><span id="aiEnemyStrength">-</span><small>Forza Avversario</small></div>
     <div class="stat"><span id="aiSevenBello">-</span><small>AI 7 Bello</small></div>
 
 </section>
@@ -51,6 +63,8 @@
     <h2>Cronologia</h2>
     <ul id="historyList"></ul>
 </section>
+
+<div id="toast"></div>
 
 <script src="app.js"></script>
 
