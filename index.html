@@ -1,266 +1,70 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Conta Carte Scopa PRO</title>
-
-<style>
-body{
-    font-family:Arial,sans-serif;
-    background:#f4f4f4;
-    padding:20px;
-    text-align:center;
-}
-
-h1{
-    color:#2c3e50;
-}
-
-.stats{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:15px;
-    margin-bottom:20px;
-}
-
-.box{
-    background:white;
-    padding:15px;
-    border-radius:10px;
-    min-width:160px;
-    box-shadow:0 2px 5px rgba(0,0,0,.2);
-}
-
-#mazzo{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
-    gap:10px;
-    max-width:1200px;
-    margin:auto;
-}
-
-.carta{
-    border:2px solid #333;
-    border-radius:10px;
-    padding:15px;
-    cursor:pointer;
-    font-weight:bold;
-    transition:.2s;
-}
-
-.carta:hover{
-    transform:scale(1.05);
-}
-
-.denari{
-    background:#ffe082;
-}
-
-.coppe{
-    background:#ffcdd2;
-}
-
-.bastoni{
-    background:#d7ccc8;
-}
-
-.spade{
-    background:#e0e0e0;
-}
-
-.uscita{
-    background:#2ecc71 !important;
-    color:white;
-}
-
-.settebello{
-    border:4px solid gold;
-}
-
-#usciteLista{
-    margin-top:25px;
-    background:white;
-    padding:15px;
-    border-radius:10px;
-    max-width:900px;
-    margin-left:auto;
-    margin-right:auto;
-}
-
-button{
-    margin-top:20px;
-    padding:12px 25px;
-    border:none;
-    border-radius:8px;
-    background:#3498db;
-    color:white;
-    cursor:pointer;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scopa Tracker PRO</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>🃏 Conta Carte Scopa PRO</h1>
+<header>
+    <h1>🃏 Scopa Tracker PRO</h1>
+</header>
 
-<div class="stats">
+<section class="dashboard">
 
-<div class="box">
-Carte uscite<br>
-<b id="uscite">0</b>
-</div>
+    <div class="stat">
+        <span id="uscite">0</span>
+        <small>Carte Uscite</small>
+    </div>
 
-<div class="box">
-Carte rimaste<br>
-<b id="rimaste">40</b>
-</div>
+    <div class="stat">
+        <span id="rimaste">40</span>
+        <small>Carte Rimaste</small>
+    </div>
 
-<div class="box">
-Denari rimasti<br>
-<b id="denari">10</b>
-</div>
+    <div class="stat">
+        <span id="denari">10</span>
+        <small>Denari</small>
+    </div>
 
-<div class="box">
-Coppe rimaste<br>
-<b id="coppe">10</b>
-</div>
+    <div class="stat">
+        <span id="sette">4</span>
+        <small>Sette</small>
+    </div>
 
-<div class="box">
-Bastoni rimasti<br>
-<b id="bastoni">10</b>
-</div>
+    <div class="stat">
+        <span id="assi">4</span>
+        <small>Assi</small>
+    </div>
 
-<div class="box">
-Spade rimaste<br>
-<b id="spade">10</b>
-</div>
+    <div class="stat">
+        <span id="figure">12</span>
+        <small>Figure</small>
+    </div>
 
-<div class="box">
-7 Bello<br>
-<b id="settebelloStatus">IN GIOCO</b>
-</div>
+    <div class="stat">
+        <span id="settebello">🟢</span>
+        <small>7 Bello</small>
+    </div>
 
-</div>
+</section>
 
-<div id="mazzo"></div>
+<section class="actions">
+    <button id="toggleView">👁 Solo carte rimaste</button>
+    <button id="undoBtn">↩️ Annulla</button>
+    <button id="resetBtn">🔄 Nuova partita</button>
+</section>
 
-<button onclick="resetPartita()">🔄 Nuova Partita</button>
+<section id="cardsContainer"></section>
 
-<div id="usciteLista">
-<h3>Carte uscite</h3>
-<div id="lista"></div>
-</div>
+<section class="history">
+    <h2>Cronologia</h2>
+    <ul id="historyList"></ul>
+</section>
 
-<script>
-
-const semi = ["Denari","Coppe","Bastoni","Spade"];
-
-const conteggio = {
-Denari:10,
-Coppe:10,
-Bastoni:10,
-Spade:10
-};
-
-let uscite = 0;
-
-const listaCarte = [];
-
-const mazzo = document.getElementById("mazzo");
-
-semi.forEach(seme => {
-
-for(let numero=1; numero<=10; numero++){
-
-const carta = document.createElement("div");
-
-carta.classList.add("carta");
-
-carta.classList.add(seme.toLowerCase());
-
-if(numero===7 && seme==="Denari"){
-carta.classList.add("settebello");
-}
-
-const nomeCarta = numero + " di " + seme;
-
-carta.textContent = nomeCarta;
-
-carta.addEventListener("click",()=>{
-
-if(carta.classList.contains("uscita")){
-
-carta.classList.remove("uscita");
-uscite--;
-
-conteggio[seme]++;
-
-const index = listaCarte.indexOf(nomeCarta);
-if(index>-1) listaCarte.splice(index,1);
-
-}else{
-
-carta.classList.add("uscita");
-uscite++;
-
-conteggio[seme]--;
-
-listaCarte.push(nomeCarta);
-
-}
-
-aggiorna();
-
-});
-
-mazzo.appendChild(carta);
-
-}
-
-});
-
-function aggiorna(){
-
-document.getElementById("uscite").textContent = uscite;
-document.getElementById("rimaste").textContent = 40-uscite;
-
-document.getElementById("denari").textContent = conteggio.Denari;
-document.getElementById("coppe").textContent = conteggio.Coppe;
-document.getElementById("bastoni").textContent = conteggio.Bastoni;
-document.getElementById("spade").textContent = conteggio.Spade;
-
-document.getElementById("lista").innerHTML =
-listaCarte.join("<br>");
-
-if(listaCarte.includes("7 di Denari")){
-document.getElementById("settebelloStatus").textContent = "USCITO";
-}else{
-document.getElementById("settebelloStatus").textContent = "IN GIOCO";
-}
-
-}
-
-function resetPartita(){
-
-document.querySelectorAll(".carta").forEach(c=>{
-c.classList.remove("uscita");
-});
-
-uscite=0;
-
-conteggio.Denari=10;
-conteggio.Coppe=10;
-conteggio.Bastoni=10;
-conteggio.Spade=10;
-
-listaCarte.length=0;
-
-aggiorna();
-
-}
-
-</script>
+<script src="app.js"></script>
 
 </body>
 </html>
