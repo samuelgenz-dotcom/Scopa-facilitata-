@@ -10,36 +10,115 @@ body{
     padding:15px;
 }
 
-h1{
+header h1{
     text-align:center;
-    margin-bottom:20px;
+    margin-bottom:16px;
+    font-size:24px;
 }
 
+/* ---- SUGGERIMENTO AI ---- */
+.ai-box{
+    background:white;
+    border-radius:14px;
+    padding:14px 16px;
+    margin-bottom:14px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.ai-box h2{
+    font-size:14px;
+    margin-bottom:8px;
+    color:#555;
+}
+
+.ai-suggestion{
+    font-size:17px;
+    font-weight:bold;
+    padding:10px 14px;
+    border-radius:10px;
+    text-align:center;
+}
+
+.ai-suggestion.neutral{ background:#f0f0f0; color:#555; }
+.ai-suggestion.good   { background:#d4f5d4; color:#1a7a1a; }
+.ai-suggestion.warn   { background:#fff3cd; color:#856404; }
+
+/* ---- MANO GIOCATORE ---- */
+.hand-section{
+    background:white;
+    border-radius:14px;
+    padding:14px 16px;
+    margin-bottom:14px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.hand-section h2{
+    font-size:14px;
+    color:#555;
+    margin-bottom:10px;
+}
+
+.hand-hint{
+    font-size:12px;
+    font-weight:normal;
+    color:#999;
+}
+
+.hand-cards{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    min-height:60px;
+}
+
+.hand-empty{
+    color:#aaa;
+    font-size:13px;
+    align-self:center;
+}
+
+.hand-card{
+    width:80px;
+    height:100px;
+    border-width:3px;
+    box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
+
+/* ---- DASHBOARD ---- */
 .dashboard{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(90px,1fr));
-    gap:10px;
-    margin-bottom:20px;
+    grid-template-columns:repeat(auto-fit,minmax(85px,1fr));
+    gap:8px;
+    margin-bottom:14px;
 }
 
 .stat{
     background:white;
     border-radius:12px;
-    padding:10px;
+    padding:10px 6px;
     text-align:center;
-    box-shadow:0 2px 5px rgba(0,0,0,.1);
+    box-shadow:0 2px 5px rgba(0,0,0,.08);
 }
+
+.stat.prob{ background:#f0f8ff; }
+.stat.warn{ background:#fff8f0; }
 
 .stat span{
     display:block;
-    font-size:22px;
+    font-size:20px;
     font-weight:bold;
 }
 
+.stat small{
+    font-size:10px;
+    color:#777;
+}
+
+/* ---- AZIONI ---- */
 .actions{
     display:flex;
     gap:10px;
-    margin-bottom:20px;
+    margin-bottom:14px;
     flex-wrap:wrap;
 }
 
@@ -49,77 +128,99 @@ button{
     border:none;
     border-radius:10px;
     cursor:pointer;
-    font-size:15px;
+    font-size:14px;
+    background:#e8e8e8;
 }
 
+button:hover{ background:#d8d8d8; }
+
+/* ---- CARTE ---- */
 #cardsContainer{
     display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(90px,1fr));
-    gap:10px;
+    grid-template-columns:repeat(auto-fill,minmax(80px,1fr));
+    gap:8px;
 }
 
 .card{
     background:white;
     border-radius:12px;
     border:2px solid #ddd;
-    height:120px;
+    height:110px;
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
     cursor:pointer;
     transition:.2s;
+    position:relative;
+    user-select:none;
 }
 
-.card:hover{
-    transform:scale(1.03);
+.card:hover{ transform:scale(1.04); }
+
+.card.used{ opacity:.22; }
+
+.card.in-hand{
+    border-width:3px;
+    background:#fffde7;
 }
 
-.card.used{
-    opacity:.25;
+.denari { border-color:goldenrod; }
+.coppe  { border-color:#e74c3c; }
+.bastoni{ border-color:#27ae60; }
+.spade  { border-color:#555; }
+
+.settebello{ box-shadow:0 0 12px gold; }
+
+.value{ font-size:26px; font-weight:bold; }
+.suit { font-size:16px; }
+
+.card-state{
+    position:absolute;
+    top:4px;
+    right:6px;
+    font-size:11px;
+    opacity:.7;
 }
 
-.denari{
-    border-color:gold;
+/* ---- CRONOLOGIA ---- */
+.history{ margin-top:24px; }
+
+.history h2{
+    font-size:14px;
+    color:#555;
+    margin-bottom:8px;
 }
 
-.coppe{
-    border-color:#e74c3c;
-}
-
-.bastoni{
-    border-color:#27ae60;
-}
-
-.spade{
-    border-color:#555;
-}
-
-.settebello{
-    box-shadow:0 0 10px gold;
-}
-
-.value{
-    font-size:28px;
-    font-weight:bold;
-}
-
-.suit{
-    font-size:12px;
-}
-
-.history{
-    margin-top:30px;
-}
-
-.history ul{
-    list-style:none;
-}
+.history ul{ list-style:none; }
 
 .history li{
     background:white;
-    margin:5px 0;
-    padding:8px;
+    margin:4px 0;
+    padding:8px 12px;
     border-radius:8px;
     cursor:pointer;
+    font-size:13px;
+    box-shadow:0 1px 3px rgba(0,0,0,.07);
 }
+
+.history li:hover{ background:#f5f5f5; }
+
+/* ---- TOAST ---- */
+#toast{
+    position:fixed;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#333;
+    color:white;
+    padding:10px 20px;
+    border-radius:20px;
+    font-size:14px;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .3s;
+    z-index:999;
+}
+
+#toast.show{ opacity:1; }
