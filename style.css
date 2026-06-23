@@ -1,0 +1,125 @@
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f3f5f7;
+    padding:15px;
+}
+
+h1{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.dashboard{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(90px,1fr));
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.stat{
+    background:white;
+    border-radius:12px;
+    padding:10px;
+    text-align:center;
+    box-shadow:0 2px 5px rgba(0,0,0,.1);
+}
+
+.stat span{
+    display:block;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+
+button{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+}
+
+#cardsContainer{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(90px,1fr));
+    gap:10px;
+}
+
+.card{
+    background:white;
+    border-radius:12px;
+    border:2px solid #ddd;
+    height:120px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.card:hover{
+    transform:scale(1.03);
+}
+
+.card.used{
+    opacity:.25;
+}
+
+.denari{
+    border-color:gold;
+}
+
+.coppe{
+    border-color:#e74c3c;
+}
+
+.bastoni{
+    border-color:#27ae60;
+}
+
+.spade{
+    border-color:#555;
+}
+
+.settebello{
+    box-shadow:0 0 10px gold;
+}
+
+.value{
+    font-size:28px;
+    font-weight:bold;
+}
+
+.suit{
+    font-size:12px;
+}
+
+.history{
+    margin-top:30px;
+}
+
+.history ul{
+    list-style:none;
+}
+
+.history li{
+    background:white;
+    margin:5px 0;
+    padding:8px;
+    border-radius:8px;
+    cursor:pointer;
+}
