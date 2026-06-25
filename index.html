@@ -3,70 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Scopa PRO</title>
+<title>Scopa Tracker</title>
 <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <header>
-    <h1>🧠 AI Scopa PRO</h1>
+  <h1>🃏 Scopa Tracker</h1>
 </header>
 
-<!-- SUGGERIMENTO AI -->
-<section class="ai-box">
-    <h2>🎯 Suggerimento AI</h2>
-    <div id="aiSuggestion" class="ai-suggestion neutral">Seleziona le tue carte in mano</div>
-</section>
-
-<!-- MANO GIOCATORE -->
-<section class="hand-section">
-    <h2>✋ La tua mano <span class="hand-hint">(clicca una carta per aggiungerla)</span></h2>
-    <div id="myHandCards" class="hand-cards"></div>
-</section>
-
+<!-- STATISTICHE -->
 <section class="dashboard">
-
-    <div class="stat"><span id="uscite">0</span><small>Uscite</small></div>
-    <div class="stat"><span id="rimaste">40</span><small>Sconosciute</small></div>
-
-    <div class="stat prob"><span id="denari">10</span><small>Denari ignoti</small></div>
-    <div class="stat prob"><span id="sette">4</span><small>Sette ignoti</small></div>
-    <div class="stat prob"><span id="assi">4</span><small>Assi ignoti</small></div>
-    <div class="stat prob"><span id="figure">12</span><small>Figure ignote</small></div>
-
-    <div class="stat"><span id="settebello">🟢</span><small>7 Bello</small></div>
-
-    <!-- PROBABILITÀ AVVERSARIO -->
-    <div class="stat warn"><span id="probDenari">0%</span><small>Avv. ha Denaro</small></div>
-    <div class="stat warn"><span id="probSette">0%</span><small>Avv. ha Sette</small></div>
-    <div class="stat warn"><span id="probAsso">0%</span><small>Avv. ha Asso</small></div>
-    <div class="stat warn"><span id="probFigura">0%</span><small>Avv. ha Figura</small></div>
-    <div class="stat warn"><span id="probSettebello">0%</span><small>Avv. ha 7 Bello</small></div>
-
-    <!-- AI PRO -->
-    <div class="stat"><span id="aiAdvantage">🟡</span><small>Vantaggio</small></div>
-    <div class="stat"><span id="aiEnemyStrength">-</span><small>Forza Avversario</small></div>
-    <div class="stat"><span id="aiSevenBello">-</span><small>AI 7 Bello</small></div>
-
+  <div class="stat"><span id="uscite">0</span><small>Uscite</small></div>
+  <div class="stat"><span id="rimaste">40</span><small>Rimaste</small></div>
+  <div class="stat"><span id="settebello">🟢</span><small>7 Bello</small></div>
+  <div class="stat"><span id="denari">10</span><small>Denari rim.</small></div>
+  <div class="stat"><span id="sette">4</span><small>Sette rim.</small></div>
+  <div class="stat"><span id="assi">4</span><small>Assi rim.</small></div>
 </section>
 
+<!-- AZIONI -->
 <section class="actions">
-    <button id="toggleView">👁 Solo carte rimaste</button>
-    <button id="undoBtn">↩️ Annulla</button>
-    <button id="resetBtn">🔄 Nuova partita</button>
+  <button id="aiBtn">🧠 Consiglio AI</button>
+  <button id="toggleView">👁 Solo rimaste</button>
+  <button id="undoBtn">↩️ Annulla</button>
+  <button id="resetBtn">🔄 Reset</button>
 </section>
 
+<!-- MAZZO -->
 <section id="cardsContainer"></section>
 
-<section class="history">
-    <h2>Cronologia</h2>
-    <ul id="historyList"></ul>
-</section>
+<!-- PANNELLO AI (nascosto di default) -->
+<div id="aiOverlay" class="overlay hidden">
+  <div class="panel">
+    <div class="panel-header">
+      <h2>🧠 Consiglio AI</h2>
+      <button id="closePanel">✕</button>
+    </div>
+
+    <p class="panel-hint">Seleziona le 3 carte che hai in mano:</p>
+
+    <div id="handPicker"></div>
+
+    <div id="aiResult" class="ai-result hidden"></div>
+
+    <button id="clearHand" class="btn-secondary">🗑 Svuota selezione</button>
+  </div>
+</div>
 
 <div id="toast"></div>
 
 <script src="app.js"></script>
-
 </body>
 </html>
